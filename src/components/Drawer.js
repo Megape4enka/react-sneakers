@@ -1,6 +1,34 @@
 import React from 'react';
+import Info from "./Info";
+import AppContext from "../context";
+import axios from "axios";
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 function Drawer({onClose, onRemove, items = []}) {
+    const { cartItems, setCartItems } = React.useContext(AppContext)
+    const [orderId, setOrderId] = React.useState(null)
+    const [isOrderComplete, setIsOrderComplete] = React.useState(false)
+    const [isLoading, setIsLoading] = React.useState(false)
+
+    const onClickOrder = async () => {
+        try {
+            setIsLoading(true)
+            const {data} = await axios.post('https://6115823a8f38520017a38536.mockapi.io/orders', {items: cartItems})
+            setOrderId(data.id)
+            setIsOrderComplete(true)
+            setCartItems([])
+
+            for (let i = 0; i < cartItems.length; i++) {
+                const item = cartItems[i]
+                await axios.delete('https://6115823a8f38520017a38536.mockapi.io/cart' + item.id)
+                await delay(1000)
+            }
+        } catch (error) {
+            alert('Ошибка при создании заказа :(')
+        }
+        setIsLoading(false)
+    }
     return (
         <div className='overlay'>
             <div className="drawer">
@@ -9,13 +37,12 @@ function Drawer({onClose, onRemove, items = []}) {
                     <img onClick={onClose} className='cu-p' src="/img/btn-remove.svg" alt="Remove"/>
                 </h2>
 
-                {
-                    items.length > 0
-                    ?   <div>
+                {items.length > 0 ? (
+                        <div className='flex d-flex flex-column'>
                             <div className="items">
                                 {
                                     items.map((obj) => (
-                                        <div className="cartItem d-flex align-center mb-20">
+                                        <div key={obj.id} className="cartItem d-flex align-center mb-20">
                                             <div
                                                 style={{backgroundImage: `url(${obj.imageUrl})`}}
                                                 className="cartItemImg"
@@ -47,26 +74,24 @@ function Drawer({onClose, onRemove, items = []}) {
                                         <b>1012 руб.</b>
                                     </li>
                                 </ul>
-                                <button className='greenButton'>
+                                <button disabled={isLoading} onClick={onClickOrder} className='greenButton'>
                                     Оформить заказ
                                     <img src="/img/arrow.svg" alt="arrow"/>
                                 </button>
                             </div>
                         </div>
 
-                      : <div className="cartEmpty d-flex align-center justify-center flex-column flex">
-                            <img className='mb-20' width='120px' height='120px' src="/img/empty-cart.jpg" alt="empty"/>
-                            <h2>Корзина пустая</h2>
-                            <p className="opacity-6">Добавьте хотябы одну пару кроссовок, чтобы сделать заказ.</p>
-                            <button onClick={onClose} className="greenButton">
-                                <img src="/img/arrow.svg" alt="Arrow"/>
-                                Вернуться назад
-                            </button>
-                        </div>  
+                    ) : (
+                        <Info
+                            title={isOrderComplete ? 'Заказ оформлен!' : 'Корзина пустая'}
+                            description={isOrderComplete ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке` : 'Добавьте хотябы одну пару кроссовок, чтобы сделать заказ.'}
+                            image={isOrderComplete ? '/img/complete-order.jpg' : '/img/empty-cart.jpg'}
+                        />
+                    )
                 }
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default Drawer;
