@@ -11,7 +11,7 @@ body {
 
 .wrapper {
   background: #ffffff;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04);
   border-radius: 20px;
   max-width: 1080px;
   margin: 50px auto;
@@ -190,31 +190,6 @@ header {
   }
 }
 
-.overlay {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
-  z-index: 1;
-}
-
-.drawer {
-  position: absolute;
-  width: 385px;
-  height: 100%;
-  right: 0;
-  background: #ffffff;
-  box-shadow: -10px 4px 24px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-
-  h2 {
-    margin: 0;
-    font-size: 24px;
-  }
-}
-
 @keyframes button-loading {
   0% {
     opacity: 1;
@@ -226,4 +201,3 @@ header {
     opacity: 1;
   }
 }
-

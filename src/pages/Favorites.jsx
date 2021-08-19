@@ -4,6 +4,7 @@ import AppContext from '../context'
 
 function Favorites() {
     const { favorites, onAddToFavorite } = React.useContext(AppContext)
+
     return (
         <div className="content p-40">
             <div className='mb-40 d-flex align-center justify-between'>
