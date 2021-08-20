@@ -31,12 +31,12 @@ function Home({
             <div className='mb-40 d-flex align-center justify-between'>
                 <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : 'Все кросовки'}</h1>
                 <div className='search-block d-flex'>
-                    <img src="/public/img/search.svg" alt="Search"/>
+                    <img src="img/search.svg" alt="Search"/>
                     {searchValue && (
                         <img
                             onClick={() => setSearchValue('')}
                             className='clear cu-p'
-                            src="/public/img/btn-remove.svg" alt="remove"
+                            src="img/btn-remove.svg" alt="remove"
                         />
                     )}
                     <input onChange={onChangeSearchInput} value={searchValue} placeholder='Поиск...'/>
