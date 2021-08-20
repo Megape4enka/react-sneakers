@@ -119,6 +119,10 @@ function App() {
           <Favorites />
         </Route>
 
+        <Route path='/orders' exact>
+          <Orders />
+        </Route>
+
       </div>
     </AppContext.Provider>
   );
